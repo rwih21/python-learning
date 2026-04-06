@@ -1,5 +1,11 @@
 import random
 import time
+import pygame
+
+pygame.init()
+
+screen = pygame.display.set_mode((640, 480))
+clock = pygame.time.Clock()
 
 currentRoom = "Hall"
 gameState = "explore"
@@ -37,6 +43,16 @@ rooms = {
     }
 }
 
+enemyVisuals = {
+    "Zombie Chef": """
+      ZOMBIE CHEF
+         (x_x)
+        /|   |\\🔪
+         /   \\
+
+A rotten chef approaches..."""
+}
+
 inventory = []
 
 def showInstruction():
@@ -66,6 +82,8 @@ def checkPlayerHp():
     else:
         print(f"Your HP is currently {playerHp}")
 
+# def createHpBar():
+
 def delayPrint(message):
     print(message)
     time.sleep(1)
@@ -86,7 +104,8 @@ while True:
             if move[1] == rooms[currentRoom]["item"]:
                 delayPrint(f"You got a {move[1]}")
                 inventory.append(move[1]) # add item to inventory with "append"
-                rooms[currentRoom]["item"] = ""
+                # rooms[currentRoom]["item"] = ""
+                del rooms[currentRoom]["item"]
             else:
                 delayPrint(f"You don't see a {move[1]} here!")
 
@@ -107,6 +126,7 @@ while True:
                         gameState = "battle"
                         enemyHp = 100
                         delayPrint(f"You have encountered {rooms[currentRoom]['enemy']}!")
+                        delayPrint(enemyVisuals[rooms[currentRoom]['enemy']])
 
                     # check item
                     if gameState == "explore":
